@@ -2,7 +2,7 @@ import os
 from PIL import Image
 import numpy as np
 
-def convert_dataset(input_dir, output_dir, is_mask)
+def convert_dataset(input_dir, output_dir, is_mask):
     if is_mask:
         # Masks processing
         folders_list = os.listdir(input_masks_dir)
