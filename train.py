@@ -16,9 +16,9 @@ from utils.dice_score import dice_loss
 from evaluate import evaluate
 from unet import UNet
 
-dir_img = Path('./data/imgs/')
-dir_mask = Path('./data/masks/')
-dir_checkpoint = Path('./checkpoints/')
+#dir_img = Path('./data/imgs/')
+#dir_mask = Path('./data/masks/')
+#dir_checkpoint = Path('./checkpoints/')
 
 
 def train_net(net,
@@ -152,12 +152,22 @@ def get_args():
     parser.add_argument('--validation', '-v', dest='val', type=float, default=10.0,
                         help='Percent of the data that is used as validation (0-100)')
     parser.add_argument('--amp', action='store_true', default=False, help='Use mixed precision')
-
+    
+    #dir_img = Path('./data/imgs/')
+    #dir_mask = Path('./data/masks/')
+    #dir_checkpoint = Path('./checkpoints/')
+    parser.add_argument('--dir-img', dest='dir_img', default='./data/imgs/', help='Directory of input images')
+    parser.add_argument('--dir-mask', dest='dir_mask', default='./data/masks/', help='Directory of input masks')
+    parser.add_argument('--dir-checkpoints', dest='dir_checkpoint', default='./checkpoints/', help='Directory of checkpoints')
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     args = get_args()
+    
+    dir_img = Path(dir_img)
+    dir_mask = Path(dir_mask)
+    dir_checkpoint = Path(dir_checkpoint)
 
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -166,7 +176,7 @@ if __name__ == '__main__':
     # Change here to adapt to your data
     # n_channels=3 for RGB images
     # n_classes is the number of probabilities you want to get per pixel
-    net = UNet(n_channels=3, n_classes=2, bilinear=True)
+    net = UNet(n_channels=1, n_classes=2, bilinear=True)
 
     logging.info(f'Network:\n'
                  f'\t{net.n_channels} input channels\n'
